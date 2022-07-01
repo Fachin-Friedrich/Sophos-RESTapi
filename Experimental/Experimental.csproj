@@ -53,6 +53,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\cjsonWrapper\csJson.csproj">
+      <Project>{2e9a2c25-4697-4387-87e8-e0d41e4f0c26}</Project>
+      <Name>csJson</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SophosRESTConnector\SophosRESTConnector.csproj">
       <Project>{4eeefee9-1ccc-402d-9184-c762ff58dd2c}</Project>
       <Name>SophosRESTConnector</Name>
@@ -60,6 +64,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(SolutionDir)dependencies\cjson.dll $(SolutionDir)cjsonWrapper\$(OutDir)cjson.dll</PostBuildEvent>
+    <PostBuildEvent>copy $(SolutionDir)dependencies\cjson.dll $(SolutionDir)Experimental\$(OutDir)cjson.dll</PostBuildEvent>
   </PropertyGroup>
 </Project>
