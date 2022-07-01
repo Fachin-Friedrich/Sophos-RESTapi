@@ -7,20 +7,40 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Experimental", "Experimenta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SophosRESTConnector", "SophosRESTConnector\SophosRESTConnector.csproj", "{4EEEFEE9-1CCC-402D-9184-C762FF58DD2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "csJson", "cjsonWrapper\csJson.csproj", "{2E9A2C25-4697-4387-87E8-E0D41E4F0C26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A79498C5-AA7A-497E-AAEE-08936F20FC66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A79498C5-AA7A-497E-AAEE-08936F20FC66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A79498C5-AA7A-497E-AAEE-08936F20FC66}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A79498C5-AA7A-497E-AAEE-08936F20FC66}.Debug|x64.Build.0 = Debug|Any CPU
 		{A79498C5-AA7A-497E-AAEE-08936F20FC66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A79498C5-AA7A-497E-AAEE-08936F20FC66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A79498C5-AA7A-497E-AAEE-08936F20FC66}.Release|x64.ActiveCfg = Release|Any CPU
+		{A79498C5-AA7A-497E-AAEE-08936F20FC66}.Release|x64.Build.0 = Release|Any CPU
 		{4EEEFEE9-1CCC-402D-9184-C762FF58DD2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4EEEFEE9-1CCC-402D-9184-C762FF58DD2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EEEFEE9-1CCC-402D-9184-C762FF58DD2C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4EEEFEE9-1CCC-402D-9184-C762FF58DD2C}.Debug|x64.Build.0 = Debug|Any CPU
 		{4EEEFEE9-1CCC-402D-9184-C762FF58DD2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EEEFEE9-1CCC-402D-9184-C762FF58DD2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EEEFEE9-1CCC-402D-9184-C762FF58DD2C}.Release|x64.ActiveCfg = Release|Any CPU
+		{4EEEFEE9-1CCC-402D-9184-C762FF58DD2C}.Release|x64.Build.0 = Release|Any CPU
+		{2E9A2C25-4697-4387-87E8-E0D41E4F0C26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E9A2C25-4697-4387-87E8-E0D41E4F0C26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E9A2C25-4697-4387-87E8-E0D41E4F0C26}.Debug|x64.ActiveCfg = Debug|x64
+		{2E9A2C25-4697-4387-87E8-E0D41E4F0C26}.Debug|x64.Build.0 = Debug|x64
+		{2E9A2C25-4697-4387-87E8-E0D41E4F0C26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E9A2C25-4697-4387-87E8-E0D41E4F0C26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E9A2C25-4697-4387-87E8-E0D41E4F0C26}.Release|x64.ActiveCfg = Release|x64
+		{2E9A2C25-4697-4387-87E8-E0D41E4F0C26}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
