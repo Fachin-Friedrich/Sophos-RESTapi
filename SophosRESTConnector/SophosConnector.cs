@@ -29,7 +29,24 @@ namespace SophosRESTConnector
             Status = obj["status"].String;
         }
     }
+
+    public enum TimeConstraintType
+    {
+        Before,
+        After
+    }
+
+    public class TimeConstraint
+    {
+        public TimeConstraintType constrainttype;
+        public DateTime when;
+    }
     
+    public struct Alert
+    {
+
+    }
+
     public class SophosConnector
     {
         private HttpClient client;
@@ -103,7 +120,6 @@ namespace SophosRESTConnector
             baseurl = $"{json["apiHosts"].Object["global"].String}/partner/v1/";
 
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accesstoken}");
-            client.DefaultRequestHeaders.Add("X-Partner-ID", partnerid);
         }
 
         private void ProcessTenantList( jsonRoot json )
@@ -119,8 +135,12 @@ namespace SophosRESTConnector
         //TODO errorchecking
         private void ObtainTenants()
         {
-            tenantset = new HashSet<Tenant>();
-            var response = client.GetAsync($"{baseurl}tenants?pageTotal=true").Result;
+            var req = new HttpRequestMessage();
+            req.RequestUri = new Uri($"{baseurl}tenants?pageTotal=true");
+            req.Headers.Add("X-Partner-ID", partnerid);
+            req.Method = HttpMethod.Get;
+
+            var response = client.SendAsync(req).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
             var json = jsonRoot.Parse(content);
@@ -130,8 +150,12 @@ namespace SophosRESTConnector
             var pagemax = json["pages"].Object["total"].Integer;
             while( pagecurrent++ < pagemax)
             {
-                string pageurl = $"{baseurl}tenants?page={pagecurrent}";
-                response = client.GetAsync(pageurl).Result;
+                req = new HttpRequestMessage();
+                req.RequestUri = new Uri($"{baseurl}tenants?page={pagecurrent}");
+                req.Headers.Add("X-Partner-ID", partnerid);
+                req.Method = HttpMethod.Get;
+
+                response = client.SendAsync(req).Result;
                 content = response.Content.ReadAsStringAsync().Result;
                 json = jsonRoot.Parse(content);
                 ProcessTenantList(json);
@@ -142,12 +166,30 @@ namespace SophosRESTConnector
         {
             clientid = id;
             clientsecret = secret;
+            tenantset = new HashSet<Tenant>();
             client = new HttpClient();
             client.DefaultRequestHeaders.Clear();
 
             VerifyCredentials();
             ObtainPartnerId();
             ObtainTenants();
+        }
+
+        public IEnumerable<Alert> GetAlerts( Tenant ten, TimeConstraint tc)
+        {
+            var req = new HttpRequestMessage();
+            req.RequestUri = new Uri($"{ten.ApiUrl}/common/v1/alerts?from=2022-07-10T00:00:00.000Z");
+            req.Headers.Add("X-Tenant-ID", ten.Id);
+            req.Method = HttpMethod.Get;
+
+
+            var response = client.SendAsync(req).Result;
+            string content = response.Content.ReadAsStringAsync().Result;
+
+            Console.WriteLine(response.StatusCode);
+            Console.WriteLine(content);
+
+            return null;
         }
     }
 }
