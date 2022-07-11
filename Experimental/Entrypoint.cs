@@ -23,9 +23,12 @@ namespace Experimental
                     continue;
                 }
                 
-                Console.WriteLine(t.Name);
-                var alerts = q.GetAlerts(t, tc);
-                System.Threading.Thread.Sleep(2000);
+                foreach( var alert in q.GetAlerts(t, tc))
+                {
+                    Console.WriteLine(
+                        $"[{alert.IncidentTime}] {alert.AlertType} - {alert.Description}"
+                    );
+                }
             }
 
         }

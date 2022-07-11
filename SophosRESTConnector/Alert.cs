@@ -99,7 +99,7 @@ namespace SophosRESTConnector
             Id = obj["id"].String;
             Category = (AlertCategory) Enum.Parse(typeof(AlertCategory), obj["category"].String);
             Description = obj["description"].String;
-            GroupKey = obj["grouipKey"].String;
+            GroupKey = obj["groupKey"].String;
             Product = (AlertProduct)Enum.Parse(typeof(AlertProduct), obj["product"].String);
             Severity = (AlertSeverity) Enum.Parse(typeof(AlertSeverity), obj["severity"].String);
             AlertType = obj["type"].String;
