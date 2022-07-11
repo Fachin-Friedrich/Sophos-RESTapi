@@ -16,15 +16,22 @@ namespace Experimental
             tc.constrainttype = TimeConstraintType.After;
             tc.when = DateTime.Now.AddDays(-7);
 
-            foreach( var t in q.Tenants)
+            foreach (var t in q.Tenants)
             {
-                SophosConnector.WriteLog(t.Name);
-                foreach( var alert in q.GetEndpoints(t) )
+                var endpoints = q.GetEndpoints(t);
+                if( endpoints.Length == 0)
                 {
-                    //
+                    continue;
+                }
+
+                SophosConnector.WriteLog(t.Name);
+                foreach (var endpoint in endpoints)
+                {
+                    Console.WriteLine($"{endpoint.OperatingSystemName} -- {endpoint.Hostname} -- {endpoint.AssociatedUser}");
                 }
             }
-
         }
-    }
-}
+
+    } //End of class
+
+} //End of namespace
