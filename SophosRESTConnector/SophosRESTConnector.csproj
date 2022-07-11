@@ -45,8 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alert.cs" />
+    <Compile Include="RequestParamters.cs" />
     <Compile Include="SophosConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tenant.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\cjsonWrapper\csJson.csproj">
