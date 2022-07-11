@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alert.cs" />
+    <Compile Include="Endpoint.cs" />
     <Compile Include="RequestParamters.cs" />
     <Compile Include="SophosConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

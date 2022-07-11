@@ -19,11 +19,9 @@ namespace Experimental
             foreach( var t in q.Tenants)
             {
                 SophosConnector.WriteLog(t.Name);
-                foreach( var alert in q.GetAlerts(t, tc))
+                foreach( var alert in q.GetEndpoints(t) )
                 {
-                    Console.WriteLine(
-                        $"[{alert.IncidentTime}] {alert.AlertType} - {alert.Description}"
-                    );
+                    //
                 }
             }
 

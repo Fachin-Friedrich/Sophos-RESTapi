@@ -151,6 +151,16 @@ namespace SophosRESTConnector
             return offset + json["items"].Array.Elements;
         }
 
+        private static ulong ProcessEndpointList( jsonRoot json, Endpoint[] result, ulong offset)
+        {
+            for (ulong i = 0; i < json["items"].Array.Elements; ++i)
+            {
+                result[i + offset] = new Endpoint(json["items"].Array[i].Object);
+            }
+
+            return offset + json["items"].Array.Elements;
+        }
+
         private static string NextAlertPage( jsonRoot json)
         {
             try
@@ -190,7 +200,6 @@ namespace SophosRESTConnector
             string next = NextAlertPage(json);
 
             ulong total = (ulong) json["pages"].Object["items"].Integer;
-            WriteLog(total.ToString());
             var result = new Alert[total];
             ulong offset = ProcessAlertList(json, result, 0);
 
@@ -207,6 +216,40 @@ namespace SophosRESTConnector
                 next = NextAlertPage(json);
 
                 offset = ProcessAlertList(json, result, offset);
+            }
+
+            return result;
+        }
+
+        public Endpoint[] GetEndpoints( Tenant ten)
+        {
+            var req = new HttpRequestMessage();
+            req.RequestUri = new Uri($"{ten.ApiUrl}/endpoint/v1/endpoints?pageTotal=true");
+            req.Headers.Add("X-Tenant-ID", ten.Id);
+            req.Method = HttpMethod.Get;
+
+            var response = SendRequestThrottled(req);
+            string content = response.Content.ReadAsStringAsync().Result;
+            jsonRoot json = jsonRoot.Parse(content);
+            string next = NextAlertPage(json);
+
+            ulong total = (ulong)json["pages"].Object["items"].Integer;
+            var result = new Endpoint[total];
+            ulong offset = ProcessEndpointList(json, result, 0);
+
+            while (!string.IsNullOrEmpty(next))
+            {
+                req = new HttpRequestMessage();
+                req.RequestUri = new Uri($"{ten.ApiUrl}/endpoint/v1/endpoints?pageFromKey={next}");
+                req.Headers.Add("X-Tenant-ID", ten.Id);
+                req.Method = HttpMethod.Get;
+
+                response = SendRequestThrottled(req);
+                content = response.Content.ReadAsStringAsync().Result;
+                json = jsonRoot.Parse(content);
+                next = NextAlertPage(json);
+
+                offset = ProcessEndpointList(json, result, offset);
             }
 
             return result;
