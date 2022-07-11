@@ -6,47 +6,7 @@ using csJson;
 
 namespace SophosRESTConnector
 {
-    public struct Tenant
-    {
-        public readonly string Id;
-        public readonly string Name;
-        public readonly string GeographicalRegion;
-        public readonly string DataRegion;
-        public readonly string BillingType;
-        public readonly string PartnerId;
-        public readonly string ApiUrl;
-        public readonly string Status;
-
-        internal Tenant( jsonObject obj)
-        {
-            Id = obj["id"].String;
-            Name = obj["name"].String;
-            GeographicalRegion = obj["dataGeography"].String;
-            DataRegion = obj["dataRegion"].String;
-            BillingType = obj["billingType"].String;
-            PartnerId = obj["partner"].Object["id"].String;
-            ApiUrl = obj["apiHost"].String;
-            Status = obj["status"].String;
-        }
-    }
-
-    public enum TimeConstraintType
-    {
-        Before,
-        After
-    }
-
-    public class TimeConstraint
-    {
-        public TimeConstraintType constrainttype;
-        public DateTime when;
-    }
     
-    public struct Alert
-    {
-
-    }
-
     public class SophosConnector
     {
         private HttpClient client;
@@ -177,6 +137,8 @@ namespace SophosRESTConnector
 
         public IEnumerable<Alert> GetAlerts( Tenant ten, TimeConstraint tc)
         {
+            var result = new HashSet<Alert>();
+            
             var req = new HttpRequestMessage();
             req.RequestUri = new Uri($"{ten.ApiUrl}/common/v1/alerts?from=2022-07-10T00:00:00.000Z");
             req.Headers.Add("X-Tenant-ID", ten.Id);
@@ -186,10 +148,10 @@ namespace SophosRESTConnector
             var response = client.SendAsync(req).Result;
             string content = response.Content.ReadAsStringAsync().Result;
 
-            Console.WriteLine(response.StatusCode);
-            Console.WriteLine(content);
 
             return null;
         }
-    }
-}
+
+    } //End of class
+
+} //End of namespace

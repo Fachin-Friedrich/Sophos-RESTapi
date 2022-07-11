@@ -18,6 +18,11 @@ namespace Experimental
 
             foreach( var t in q.Tenants)
             {
+                if( t.Name.StartsWith("Mobile Pflege Petker") == false)
+                {
+                    continue;
+                }
+                
                 Console.WriteLine(t.Name);
                 var alerts = q.GetAlerts(t, tc);
                 System.Threading.Thread.Sleep(2000);
