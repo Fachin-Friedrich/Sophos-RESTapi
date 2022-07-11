@@ -18,11 +18,7 @@ namespace Experimental
 
             foreach( var t in q.Tenants)
             {
-                if( t.Name.StartsWith("Mobile Pflege Petker") == false)
-                {
-                    continue;
-                }
-                
+                SophosConnector.WriteLog(t.Name);
                 foreach( var alert in q.GetAlerts(t, tc))
                 {
                     Console.WriteLine(

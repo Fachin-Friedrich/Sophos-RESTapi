@@ -163,6 +163,20 @@ namespace SophosRESTConnector
             }
         }
 
+        private static HttpRequestMessage DuplicateRequestMessage( HttpRequestMessage msg)
+        {
+            var dupe = new HttpRequestMessage();
+            dupe.RequestUri = msg.RequestUri;
+            dupe.Method = msg.Method;
+
+            foreach( var header in msg.Headers)
+            {
+                dupe.Headers.Add(header.Key, header.Value);
+            }
+
+            return dupe;
+        }
+
         public IEnumerable<Alert> GetAlerts( Tenant ten, TimeConstraint tc)
         {
             var result = new HashSet<Alert>();
@@ -197,7 +211,7 @@ namespace SophosRESTConnector
             return result;
         }
 
-        private static void WriteLog( string msg)
+        public static void WriteLog( string msg)
         {
             var col = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -216,6 +230,7 @@ namespace SophosRESTConnector
                 lastthrottle = ++attempts * 500;
                 WriteLog($"Hit throttle with {lastthrottle}ms");
                 System.Threading.Thread.Sleep(lastthrottle);
+                msg = DuplicateRequestMessage(msg);
                 response = client.SendAsync(msg).Result;
             }
 
