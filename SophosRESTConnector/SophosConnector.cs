@@ -20,14 +20,10 @@ namespace SophosRESTConnector
         private string partnerid;
         private string baseurl;
 
-        private HashSet<Tenant> tenantset;
-        public IEnumerable<Tenant> Tenants
+        private Tenant[] tenantlist;
+        public Tenant[] Tenants
         {
-            get => tenantset;
-        }
-        public int TenantCount
-        {
-            get => tenantset.Count;
+            get => tenantlist;
         }
 
         private int lastthrottle;
@@ -89,18 +85,18 @@ namespace SophosRESTConnector
             client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accesstoken}");
         }
 
-        private void ProcessTenantList( jsonRoot json )
+        private static ulong ProcessTenantList( jsonRoot json, Tenant[] result, ulong offset )
         {
-            var arr = json["items"].Array;
-            var elementcnt = arr.Elements;
-            while( elementcnt-- > 0)
+            for( ulong i = 0; i < json["items"].Array.Elements; ++i)
             {
-                tenantset.Add(new Tenant(arr[elementcnt].Object));
+                result[offset + i] = new Tenant( json["items"].Array[i].Object );
             }
+
+            return offset + json["items"].Array.Elements;
         }
 
         //TODO errorchecking
-        private void ObtainTenants()
+        private Tenant[] ObtainTenants()
         {
             var req = new HttpRequestMessage();
             req.RequestUri = new Uri($"{baseurl}tenants?pageTotal=true");
@@ -109,9 +105,11 @@ namespace SophosRESTConnector
 
             var response = SendRequestThrottled(req);
             var content = response.Content.ReadAsStringAsync().Result;
-
             var json = jsonRoot.Parse(content);
-            ProcessTenantList(json);
+
+            ulong total = (ulong) json["pages"].Object["items"].Integer;
+            var result = new Tenant[total];
+            ulong offset = ProcessTenantList(json, result, 0);
 
             var pagecurrent = json["pages"].Object["current"].Integer;
             var pagemax = json["pages"].Object["total"].Integer;
@@ -125,30 +123,32 @@ namespace SophosRESTConnector
                 response = SendRequestThrottled(req);
                 content = response.Content.ReadAsStringAsync().Result;
                 json = jsonRoot.Parse(content);
-                ProcessTenantList(json);
+                offset = ProcessTenantList(json, result, offset);
             }
+
+            return result;
         }
 
         public SophosConnector( string id, string secret )
         {
             clientid = id;
             clientsecret = secret;
-            tenantset = new HashSet<Tenant>();
             client = new HttpClient();
             client.DefaultRequestHeaders.Clear();
 
             VerifyCredentials();
             ObtainPartnerId();
-            ObtainTenants();
+            tenantlist = ObtainTenants();
         }
 
-        private void ProcessAlertList( jsonRoot json, HashSet<Alert> res )
+        private static ulong ProcessAlertList( jsonRoot json, Alert[] result, ulong offset )
         {
-            ulong cnt = json["items"].Array.Elements;
-            while( cnt-- > 0)
+            for( ulong i = 0; i < json["items"].Array.Elements; ++i)
             {
-                res.Add(new Alert(json["items"].Array[cnt].Object));
+                result[i + offset] = new Alert(json["items"].Array[i].Object);
             }
+
+            return offset + json["items"].Array.Elements;
         }
 
         private static string NextAlertPage( jsonRoot json)
@@ -177,12 +177,10 @@ namespace SophosRESTConnector
             return dupe;
         }
 
-        public IEnumerable<Alert> GetAlerts( Tenant ten, TimeConstraint tc)
-        {
-            var result = new HashSet<Alert>();
-            
+        public Alert[] GetAlerts( Tenant ten, TimeConstraint tc)
+        {            
             var req = new HttpRequestMessage();
-            req.RequestUri = new Uri($"{ten.ApiUrl}/common/v1/alerts");
+            req.RequestUri = new Uri($"{ten.ApiUrl}/common/v1/alerts?pageTotal=true");
             req.Headers.Add("X-Tenant-ID", ten.Id);
             req.Method = HttpMethod.Get;
 
@@ -191,7 +189,10 @@ namespace SophosRESTConnector
             jsonRoot json = jsonRoot.Parse(content);
             string next = NextAlertPage(json);
 
-            ProcessAlertList(json, result);
+            ulong total = (ulong) json["pages"].Object["items"].Integer;
+            WriteLog(total.ToString());
+            var result = new Alert[total];
+            ulong offset = ProcessAlertList(json, result, 0);
 
             while( !string.IsNullOrEmpty(next))
             {
@@ -205,7 +206,7 @@ namespace SophosRESTConnector
                 json = jsonRoot.Parse(content);
                 next = NextAlertPage(json);
 
-                ProcessAlertList(json, result);
+                offset = ProcessAlertList(json, result, offset);
             }
 
             return result;
@@ -228,7 +229,6 @@ namespace SophosRESTConnector
             while( (int) response.StatusCode == 429) //SOPHOS uses code 429 for hitting rate limit
             {
                 lastthrottle = ++attempts * 500;
-                WriteLog($"Hit throttle with {lastthrottle}ms");
                 System.Threading.Thread.Sleep(lastthrottle);
                 msg = DuplicateRequestMessage(msg);
                 response = client.SendAsync(msg).Result;
