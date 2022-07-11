@@ -8,14 +8,26 @@ namespace SophosRESTConnector
 {
     public struct Tenant
     {
-        public string Id;
-        public string Name;
-        public string GeographicalRegion;
-        public string DataRegion;
-        public string BillingType;
-        public string PartnerId;
-        public string ApiUrl;
-        public string Status;
+        public readonly string Id;
+        public readonly string Name;
+        public readonly string GeographicalRegion;
+        public readonly string DataRegion;
+        public readonly string BillingType;
+        public readonly string PartnerId;
+        public readonly string ApiUrl;
+        public readonly string Status;
+
+        internal Tenant( jsonObject obj)
+        {
+            Id = obj["id"].String;
+            Name = obj["name"].String;
+            GeographicalRegion = obj["dataGeography"].String;
+            DataRegion = obj["dataRegion"].String;
+            BillingType = obj["billingType"].String;
+            PartnerId = obj["partner"].Object["id"].String;
+            ApiUrl = obj["apiHost"].String;
+            Status = obj["status"].String;
+        }
     }
     
     public class SophosConnector
@@ -31,7 +43,15 @@ namespace SophosRESTConnector
         private string partnerid;
         private string baseurl;
 
-        private HashSet<Tenant> tenants;
+        private HashSet<Tenant> tenantset;
+        public IEnumerable<Tenant> Tenants
+        {
+            get => tenantset;
+        }
+        public int TenantCount
+        {
+            get => tenantset.Count;
+        }
 
         private void VerifyCredentials()
         {
@@ -86,32 +106,25 @@ namespace SophosRESTConnector
             client.DefaultRequestHeaders.Add("X-Partner-ID", partnerid);
         }
 
-        private void ProcessTenantList( jsonRoot json, HashSet<Tenant> tset)
+        private void ProcessTenantList( jsonRoot json )
         {
             var arr = json["items"].Array;
             var elementcnt = arr.Elements;
             while( elementcnt-- > 0)
             {
-                tset.Add(
-                    new Tenant
-                    {
-                        Id = arr[elementcnt].Object["id"].String,
-                        Name = arr[elementcnt].Object["name"].String
-                        //TODO CONTINUE HERE
-                    }
-                );
+                tenantset.Add(new Tenant(arr[elementcnt].Object));
             }
         }
 
         //TODO errorchecking
         private void ObtainTenants()
         {
-            var tenantset = new HashSet<Tenant>();
+            tenantset = new HashSet<Tenant>();
             var response = client.GetAsync($"{baseurl}tenants?pageTotal=true").Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
             var json = jsonRoot.Parse(content);
-            ProcessTenantList(json, tenantset);
+            ProcessTenantList(json);
 
             var pagecurrent = json["pages"].Object["current"].Integer;
             var pagemax = json["pages"].Object["total"].Integer;
@@ -121,10 +134,8 @@ namespace SophosRESTConnector
                 response = client.GetAsync(pageurl).Result;
                 content = response.Content.ReadAsStringAsync().Result;
                 json = jsonRoot.Parse(content);
-                ProcessTenantList(json, tenantset);
+                ProcessTenantList(json);
             }
-
-            tenants = tenantset;
         }
 
         public SophosConnector( string id, string secret )
@@ -137,12 +148,6 @@ namespace SophosRESTConnector
             VerifyCredentials();
             ObtainPartnerId();
             ObtainTenants();
-
-            foreach( var tenant in tenants)
-            {
-                Console.WriteLine($"id={tenant.Id} name={tenant.Name}");
-            }
-            Console.WriteLine($"Tenantcount: {tenants.Count}");
         }
     }
 }
