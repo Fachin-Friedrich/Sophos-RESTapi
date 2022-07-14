@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using csJson;
+using SophosRESTConnector.Requests;
 
 namespace SophosRESTConnector
 {
@@ -187,7 +188,7 @@ namespace SophosRESTConnector
             return dupe;
         }
 
-        public Alert[] GetAlerts( Tenant ten, TimeConstraint tc)
+        public Alert[] GetAlerts( Tenant ten, TimeParameter tc)
         {            
             var req = new HttpRequestMessage();
             req.RequestUri = new Uri($"{ten.ApiUrl}/common/v1/alerts?pageTotal=true");

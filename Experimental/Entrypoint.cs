@@ -1,5 +1,6 @@
 ﻿using System;
 using SophosRESTConnector;
+using SophosRESTConnector.Requests;
 
 namespace Experimental
 {
@@ -12,7 +13,7 @@ namespace Experimental
                 secret: "e087863cb24ee3a43656acc82ea9a3c2a45315efd77e3e7058031cd56d3231df0da52525cd87cb855e0037515471dc504ea8"
             );
 
-            var tc = new TimeConstraint();
+            var tc = new TimeParameter(TimeConstraintType.After);
             tc.constrainttype = TimeConstraintType.After;
             tc.when = DateTime.Now.AddDays(-7);
 
