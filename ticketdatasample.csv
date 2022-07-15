@@ -1,0 +1,18 @@
+DAY = 15.07.2022;;;;
+;;;;
+Tenant;Incident Time;Location ID;Incident Type;Incident Detail
+Thiele;14:52;X11103R2TPRT469;Firewall RED tunnel down;R20002KT9GHWQ48/HOMEOFFICE is now disconnected
+Mobile Pflege;14:46;X12108G8T432VA1;Firewall VPN tunnel down;MBoerso-1 - IPSec Connection MBoerso-1 between 195.4.139.227 and 192.168.178.22 for Child MBoerso-1 terminated. (Remote: 195.4.139.227)
+Mobile Pflege;13:28;X12108G8T432VA1;Firewall VPN tunnel down;MBoerso-1 - IPSec Connection MBoerso-1 between 195.4.139.227 and 192.168.178.22 for Child MBoerso-1 terminated. (Remote: 195.4.139.227)
+Mobile Pflege;12:06;X12108G8T432VA1;Firewall VPN tunnel down;MBoerso-1 - IPSec Connection MBoerso-1 between 195.4.139.227 and 192.168.178.22 for Child MBoerso-1 terminated. (Remote: 195.4.139.227)
+Hoffmeister;11:29;HOFF2FWL01-Packelsheim;Firewall RED tunnel down;b437d5289c486a1_c/RED_Transfer2 is now disconnected
+Lebenshilfe Brakel;11:29;LEBR20FWL01 - RZ;Firewall RED tunnel down;A3502617B2389F0/VGS - Frohnhausen is now disconnected
+Hoffmeister;11:29;HOFF1FWL01-Gehrden;Firewall RED tunnel down;b437d5289c486a1/Peckelsheim2 is now disconnected
+Mobile Pflege;10:46;X12108G8T432VA1;Firewall VPN tunnel down;MBoerso-1 - IPSec Connection MBoerso-1 between 195.4.139.227 and 192.168.178.22 for Child MBoerso-1 terminated. (Remote: 195.4.139.227)
+Mobile Pflege;09:22;X12108G8T432VA1;Firewall VPN tunnel down;MBoerso-1 - IPSec Connection MBoerso-1 between 195.4.139.227 and 192.168.178.22 for Child MBoerso-1 terminated. (Remote: 195.4.139.227)
+Mobile Pflege;07:58;X12108G8T432VA1;Firewall VPN tunnel down;MBoerso-1 - IPSec Connection MBoerso-1 between 195.4.139.227 and 192.168.178.22 for Child MBoerso-1 terminated. (Remote: 195.4.139.227)
+Mobile Pflege;07:50;X12108G8T432VA1;Firewall VPN tunnel down;MBoerso-1 - IPSec Connection MBoerso-1 between 195.4.139.227 and 192.168.178.22 for Child MBoerso-1 terminated. (Remote: 195.4.139.227)
+CTL;05:36;Homberg_FWL01;Firewall RED tunnel down;45e491563e52bd7/Thalmaier is now disconnected
+Mobile Pflege;05:18;X12108G8T432VA1;Firewall VPN tunnel down;MBoerso-1 - IPSec Connection MBoerso-1 between 195.4.139.227 and 192.168.178.22 for Child MBoerso-1 terminated. (Remote: 195.4.139.227)
+Thiele;03:42;X11103R2TPRT469;Firewall RED tunnel down;R20002KT9GHWQ48/HOMEOFFICE is now disconnected
+Lebenshilfe Brakel;02:56;LEBR1FWL01;Firewall RED tunnel down;A3502617B2389F0/VGS - Frohnhausen is now disconnected
