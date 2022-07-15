@@ -8,27 +8,25 @@ namespace Experimental
     {
         static void Main(string[] args)
         {
-            var q = new SophosConnector(
+            var sophos = new SophosConnector(
                 id: "b1e43585-fa37-437f-9f26-1db5f3397efc",
                 secret: "e087863cb24ee3a43656acc82ea9a3c2a45315efd77e3e7058031cd56d3231df0da52525cd87cb855e0037515471dc504ea8"
             );
 
-            var tc = new TimeParameter(TimeConstraintType.After);
-            tc.constrainttype = TimeConstraintType.After;
-            tc.when = DateTime.Now.AddDays(-7);
+            var param = new TimeParameter(14, 7, 2022, TimeConstraintType.After);
 
-            foreach (var t in q.Tenants)
+
+            foreach( var tenant in sophos.Tenants)
             {
-                var endpoints = q.GetEndpoints(t);
-                if( endpoints.Length == 0)
+                var alerts = sophos.GetAlerts(tenant, param);
+                if( alerts.Length == 0)
                 {
                     continue;
                 }
 
-                SophosConnector.WriteLog(t.Name);
-                foreach (var endpoint in endpoints)
+                foreach( var alert in alerts)
                 {
-                    Console.WriteLine($"{endpoint.OperatingSystemName} -- {endpoint.Hostname} -- {endpoint.AssociatedUser}");
+                    Console.WriteLine($"[{alert.IncidentTime}] {tenant.Name} - {alert.AlertType}");
                 }
             }
         }
