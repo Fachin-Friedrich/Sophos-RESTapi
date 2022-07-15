@@ -16,3 +16,12 @@ CTL;05:36;Homberg_FWL01;Firewall RED tunnel down;45e491563e52bd7/Thalmaier is no
 Mobile Pflege;05:18;X12108G8T432VA1;Firewall VPN tunnel down;MBoerso-1 - IPSec Connection MBoerso-1 between 195.4.139.227 and 192.168.178.22 for Child MBoerso-1 terminated. (Remote: 195.4.139.227)
 Thiele;03:42;X11103R2TPRT469;Firewall RED tunnel down;R20002KT9GHWQ48/HOMEOFFICE is now disconnected
 Lebenshilfe Brakel;02:56;LEBR1FWL01;Firewall RED tunnel down;A3502617B2389F0/VGS - Frohnhausen is now disconnected
+;;;;
+;;;;
+;;;;
+Humborg;11:29;C23076K23D8JB34;Firewall Gateway down;Gateway 'Innogy' is Down
+CTL;00:02;C320AB8D6GB343A;Firewall Gateway down;Gateway 'Zweiter Internetanschluss' is Down
+Werkzeugbau Berger;;X13108KWKKRH835;Lost connection to central;Firewall lost connection to Sophos Central
+;;;;
+;;;;
+Ticket Incident Type;API alert message;API  resolve message;;
