@@ -42,15 +42,17 @@ namespace SophosRESTConnector.Requests
 
         public string GetRequestString()
         {
-            string fmt = $"{when.Year}-{when.Month}-{when.Day}T{when.Hour}:{when.Minute}:{when.Second}.{when.Millisecond}Z";
+            string timestamp = when.ToString("o", System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat);
+            int dot = timestamp.LastIndexOf('.');
+            timestamp = timestamp.Substring(0, dot).Replace(":", "%3A");
             
             switch(constrainttype)
             {
                 case TimeConstraintType.Before:
-                    return $"to={fmt}";
+                    return $"&to={timestamp}.000Z";
 
                 case TimeConstraintType.After:
-                    return $"?from={fmt}";
+                    return $"&from={timestamp}.000Z";
 
                 default:
                     throw new ArgumentException($"Invalid Timeconstraint ({constrainttype}) provided");

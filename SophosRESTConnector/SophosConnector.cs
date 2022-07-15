@@ -188,10 +188,12 @@ namespace SophosRESTConnector
             return dupe;
         }
 
-        public Alert[] GetAlerts( Tenant ten, TimeParameter tc)
+        public Alert[] GetAlerts(Tenant ten) => GetAlerts(ten, ConstantRequestParameter.EmptyRequestParameter);
+
+        public Alert[] GetAlerts( Tenant ten, IRequestParameter param )
         {            
             var req = new HttpRequestMessage();
-            req.RequestUri = new Uri($"{ten.ApiUrl}/common/v1/alerts?pageTotal=true");
+            req.RequestUri = new Uri($"{ten.ApiUrl}/common/v1/alerts?pageTotal=true{param.GetRequestString()}");
             req.Headers.Add("X-Tenant-ID", ten.Id);
             req.Method = HttpMethod.Get;
 
@@ -222,7 +224,9 @@ namespace SophosRESTConnector
             return result;
         }
 
-        public Endpoint[] GetEndpoints( Tenant ten)
+        public Alert[] GetEndpoints(Tenant ten) => GetAlerts(ten, ConstantRequestParameter.EmptyRequestParameter);
+
+        public Endpoint[] GetEndpoints( Tenant ten, IRequestParameter reqparam )
         {
             var req = new HttpRequestMessage();
             req.RequestUri = new Uri($"{ten.ApiUrl}/endpoint/v1/endpoints?pageTotal=true");
