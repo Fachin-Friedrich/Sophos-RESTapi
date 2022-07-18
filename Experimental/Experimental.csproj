@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationSet.cs" />
     <Compile Include="Entrypoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

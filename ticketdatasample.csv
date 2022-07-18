@@ -24,4 +24,8 @@ CTL;00:02;C320AB8D6GB343A;Firewall Gateway down;Gateway 'Zweiter Internetanschlu
 Werkzeugbau Berger;;X13108KWKKRH835;Lost connection to central;Firewall lost connection to Sophos Central
 ;;;;
 ;;;;
-Ticket Incident Type;API alert message;API  resolve message;;
+Ticket Incident Type;API alert message;API  resolve message;Extra;
+Firewall RED tunnel down;Event::Firewall::FirewallREDTunnelDown;Event::Firewall::FirewallREDTunnelUp;;
+Firewall VPN tunnel down;Event::Firewall::FirewallVPNTunnelDown;Event::Firewall::FirewallVPNTunnelUp;Can parse instigator name from description;
+Firewall Gateway down;Event::Firewall::FirewallGatewayDown;Event::Firewall::FirewallGatewayUp;Can parse instigator name from description;
+Lost connection to central;Event::Firewall::LostConnectionToSophosCentral;Event::Firewall::Reconnected;Cannot parse instigator name at all;
